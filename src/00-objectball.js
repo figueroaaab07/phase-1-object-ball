@@ -115,6 +115,7 @@ function gameObject() {
         },
     }
 };
+
 /* console.log(gameObject());
 function homeTeamName() {
   return gameObject()['home']['teamName'];
@@ -123,197 +124,284 @@ function homeTeamName() {
 console.log(homeTeamName());
 // logs "Brooklyn Nets" */
 
+function homeTeam() {
+    return gameObject().home;
+}
+
+function awayTeam() {
+    return gameObject().away;
+}
+function dataPlayers(team) {
+    return (homeTeam().teamName === team) ? homeTeam() : awayTeam();
+}
+
+function players() {
+    return Object.assign({}, homeTeam().players, awayTeam().players);
+}
+
+// function numPointsScored(playerName) {
+//     let player = {"points": 0};
+//     let game = gameObject();
+//     for (let gameKey in game) {
+//         let teamObj = game[gameKey];
+//         let data = teamObj["players"];
+//         for (let key in data) {
+//             if (key === playerName) {
+//                 player["points"] = data[key]["points"];
+//             }
+//         }
+//     }
+//     return player["points"];
+// }
 
 function numPointsScored(playerName) {
-    let player = {"points": 0};
-    let game = gameObject();
-    for (let gameKey in game) {
-        let teamObj = game[gameKey];
-        let data = teamObj["players"];
-        for (let key in data) {
-            if (key === playerName) {
-                player["points"] = data[key]["points"];
-            }
-        }
-    }
-    return player["points"];
+    return players()[playerName].points;
 }
+console.log('Biyombo points', numPointsScored("Bismak Biyombo"));
 
-console.log(numPointsScored("Bismak Biyombo"));
+// function shoeSize(playerName) {
+//     let player = {"shoe": 0};
+//     let game = gameObject();
+//     for (let gameKey in game) {
+//         let teamObj = game[gameKey];
+//         let data = teamObj["players"];
+//         for (let key in data) {
+//             if (key === playerName) {
+//                 player["shoe"] = data[key]["shoe"];
+//             }
+//         }
+//     }
+//     return player["shoe"];
+// }
 
 function shoeSize(playerName) {
-    let player = {"shoe": 0};
-    let game = gameObject();
-    for (let gameKey in game) {
-        let teamObj = game[gameKey];
-        let data = teamObj["players"];
-        for (let key in data) {
-            if (key === playerName) {
-                player["shoe"] = data[key]["shoe"];
-            }
-        }
-    }
-    return player["shoe"];
+    return players()[playerName].shoe;
 }
+console.log("Diop shoe size", shoeSize("DeSagna Diop"));
 
-console.log(shoeSize("DeSagna Diop"));
+// function teamColors(nameOfTeam) {
+//     let colorsOfTeam = [];
+//     let game = gameObject();
+//     for (let gameKey in game) {
+//         let teamObj = game[gameKey];
+//         if (teamObj["teamName"] === nameOfTeam) {
+//             colorsOfTeam = Object.values(teamObj["colors"]);
+//         }
+//     }
+//     return colorsOfTeam;
+// }
 
 function teamColors(nameOfTeam) {
-    let colorsOfTeam = [];
-    let game = gameObject();
-    for (let gameKey in game) {
-        let teamObj = game[gameKey];
-        if (teamObj["teamName"] === nameOfTeam) {
-            colorsOfTeam = Object.values(teamObj["colors"]);
-        }
-    }
-    return colorsOfTeam;
+    return dataPlayers(nameOfTeam).colors;
 }
+console.log("Charlotte Hornets", teamColors("Charlotte Hornets"));
 
-console.log(teamColors("Charlotte Hornets"));
+// function teamNames() {
+//     let nameOfTeams = [];
+//     let game = gameObject();
+//     for (let gameKey in game) {
+//         let teamObj = game[gameKey];
+//         if (teamObj["teamName"]) {
+//             nameOfTeams.push(teamObj["teamName"]);
+//         }
+//     }
+//     return nameOfTeams;
+// }
 
 function teamNames() {
-    let nameOfTeams = [];
-    let game = gameObject();
-    for (let gameKey in game) {
-        let teamObj = game[gameKey];
-        if (teamObj["teamName"]) {
-            nameOfTeams.push(teamObj["teamName"]);
-        }
-    }
-    return nameOfTeams;
+    return [homeTeam().teamName, awayTeam().teamName];
 }
+console.log("Team names", teamNames());
 
-console.log(teamNames());
+// function playerNumbers(nameOfTeam) {
+//     let jerseyNumbers = [];
+//     let game = gameObject();
+//     for (let gameKey in game) {
+//         let teamObj = game[gameKey];
+//         let data = teamObj["players"];
+//         for (let key in data) {
+//             if (teamObj["teamName"] === nameOfTeam) {
+//                 jerseyNumbers.push(data[key]["number"]);
+//             }
+//         }
+//     }
+//     return jerseyNumbers;
+// }
 
 function playerNumbers(nameOfTeam) {
     let jerseyNumbers = [];
-    let game = gameObject();
-    for (let gameKey in game) {
-        let teamObj = game[gameKey];
-        let data = teamObj["players"];
-        for (let key in data) {
-            if (teamObj["teamName"] === nameOfTeam) {
-                jerseyNumbers.push(data[key]["number"]);
-            }
-        }
+    const dataPlayer = dataPlayers(nameOfTeam).players;
+    for (let player in dataPlayer) {
+        jerseyNumbers.push(dataPlayer[player]["number"]);
     }
     return jerseyNumbers;
 }
+console.log("Nets jersey numbers", playerNumbers("Brooklyn Nets"));
 
-console.log(playerNumbers("Brooklyn Nets"));
+// function playerStats(playerName) {
+//     let player = {};
+//     let game = gameObject();
+//     for (let gameKey in game) {
+//         let teamObj = game[gameKey];
+//         let data = teamObj["players"];
+//         for (let key in data) {
+//             if (key === playerName) {
+//                 player = {...data[key]};
+//             }
+//         }
+//     }
+//     return player;
+// }
 
 function playerStats(playerName) {
-    let player = {};
-    let game = gameObject();
-    for (let gameKey in game) {
-        let teamObj = game[gameKey];
-        let data = teamObj["players"];
-        for (let key in data) {
-            if (key === playerName) {
-                player = {...data[key]};
-            }
-        }
-    }
-    return player;
+    return {...players()[playerName]};
 }
+console.log("Statistics of Anderson", playerStats("Alan Anderson"));
 
-console.log(playerStats("Alan Anderson"));
+// function bigShoeRebounds() {
+//     let player = {"shoe": 0, "rebounds": 0};
+//     let game = gameObject();
+//     for (let gameKey in game) {
+//         let teamObj = game[gameKey];
+//         let data = teamObj["players"];
+//         for (let key in data) {
+//             if (player["shoe"] < data[key]["shoe"]) {
+//                 player["shoe"] = data[key]["shoe"];
+//                 player["rebounds"] = data[key]["rebounds"];
+//             } 
+//         }
+//     }
+//     return player["rebounds"];
+// }
 
 function bigShoeRebounds() {
-    let player = {"shoe": 0, "rebounds": 0};
-    let game = gameObject();
-    for (let gameKey in game) {
-        let teamObj = game[gameKey];
-        let data = teamObj["players"];
-        for (let key in data) {
-            if (player["shoe"] < data[key]["shoe"]) {
-                player["shoe"] = data[key]["shoe"];
-                player["rebounds"] = data[key]["rebounds"];
-            } 
+    let playerVal = {"shoe": 0, "rebounds": 0};
+    for (let player in players()) {
+        if (playerVal["shoe"] < players()[player]["shoe"]) {
+            playerVal["shoe"] = players()[player]["shoe"];
+            playerVal["rebounds"] = players()[player]["rebounds"];
         }
+    return playerVal["rebounds"];
     }
-    return player["rebounds"];
 }
+console.log("Player with big shoe has rebounds", bigShoeRebounds());
 
-console.log(bigShoeRebounds());
+// function mostPointsScored() {
+//     let player = {"points": 0, "name": ""};
+//     let game = gameObject();
+//     for (let gameKey in game) {
+//         let teamObj = game[gameKey];
+//         let data = teamObj["players"];
+//         for (let key in data) {
+//             if (player["points"] < data[key]["points"]) {
+//                 player["points"] = data[key]["points"];
+//                 player["name"] = key;
+//             } 
+//         }
+//     }
+//     return player["name"];
+// }
 
 function mostPointsScored() {
-    let player = {"points": 0, "name": ""};
-    let game = gameObject();
-    for (let gameKey in game) {
-        let teamObj = game[gameKey];
-        let data = teamObj["players"];
-        for (let key in data) {
-            if (player["points"] < data[key]["points"]) {
-                player["points"] = data[key]["points"];
-                player["name"] = key;
-            } 
+    let playerVal = {"points": 0, "name": ""};
+    for (let player in players()) {
+        if (playerVal["points"] < players()[player]["points"]) {
+            playerVal["points"] = players()[player]["points"];
+            playerVal["name"] = player;
         }
     }
-    return player["name"];
+    return playerVal["name"];
 }
+console.log("Player High Score", mostPointsScored());
 
-console.log(mostPointsScored());
+// function winningTeam() {
+//     let game = gameObject();
+//     let accum1 = 0;
+//     let accum2 = 0;
+//     for (let gameKey in game) {
+//         let teamObj = game[gameKey];
+//         let data = teamObj["players"];
+//         for (let key in data) {
+//             if (teamObj["teamName"] === "Brooklyn Nets") {
+//                 accum1 += data[key]["points"];
+//             } else {
+//                 accum2 += data[key]["points"];
+//             }
+//         }
+//     }
+//     return (accum1 > accum2) ? "Brooklyn Nets" : "Charlotte Hornets";
+// }
 
 function winningTeam() {
-    let game = gameObject();
     let accum1 = 0;
     let accum2 = 0;
-    for (let gameKey in game) {
-        let teamObj = game[gameKey];
-        let data = teamObj["players"];
-        for (let key in data) {
-            if (teamObj["teamName"] === "Brooklyn Nets") {
-                accum1 += data[key]["points"];
-            } else {
-                accum2 += data[key]["points"];
-            }
+    for (let player in players()) {
+        if (homeTeam().players[player]) {
+            accum1 += players()[player]["points"];
+        } else {
+            accum2 += players()[player]["points"];
         }
     }
     return (accum1 > accum2) ? "Brooklyn Nets" : "Charlotte Hornets";
 }
+console.log("Winning team is", winningTeam());
 
-console.log(winningTeam());
-
+// function playerWithLongestName() {
+//     let game = gameObject();
+//     let player = {"length": 0, "name": ""};
+//     for (let gameKey in game) {
+//         let teamObj = game[gameKey];
+//         let data = teamObj["players"];
+//         for (let key in data) {
+//             if (player["length"] < key.length) {
+//                 player["length"] = key.length;
+//                 player["name"] = key;
+//             }
+//         }
+//     }
+//     return player["name"];
+// }
 function playerWithLongestName() {
-    let game = gameObject();
-    let player = {"length": 0, "name": ""};
-    for (let gameKey in game) {
-        let teamObj = game[gameKey];
-        let data = teamObj["players"];
-        for (let key in data) {
-            if (player["length"] < key.length) {
-                player["length"] = key.length;
-                player["name"] = key;
-            }
+    let playerVal = {"length": 0, "name": ""};
+    for (let player in players()) {
+        if (playerVal["length"] < player.length) {
+            playerVal["length"] = player.length;
+            playerVal["name"] = player;
         }
     }
-    return player["name"];
+    return playerVal["name"];
 }
+console.log("Player with longest name", playerWithLongestName());
 
-console.log(playerWithLongestName());
+// function doesLongNameStealATon() {
+//     let game = gameObject();
+//     let player1 = {"length": 0, "name": ""};
+//     let player2 = {"steals": 0, "name": ""};   
+//     for (let gameKey in game) {
+//         let teamObj = game[gameKey];
+//         let data = teamObj["players"];
+//         for (let key in data) {
+//             if (player1["length"] < key.length) {
+//                 player1["length"] = key.length;
+//                 player1["name"] = key;
+//             }
+//             if (player2["steals"] < data[key]["steals"]) {
+//                 player2["steals"] = data[key]["steals"];
+//                 player2["name"] = key;
+//             }
 
+//         }
+//     }
+//     return player1["name"] === player2["name"];
+// }
 function doesLongNameStealATon() {
-    let game = gameObject();
-    let player1 = {"length": 0, "name": ""};
-    let player2 = {"steals": 0, "name": ""};   
-    for (let gameKey in game) {
-        let teamObj = game[gameKey];
-        let data = teamObj["players"];
-        for (let key in data) {
-            if (player1["length"] < key.length) {
-                player1["length"] = key.length;
-                player1["name"] = key;
-            }
-            if (player2["steals"] < data[key]["steals"]) {
-                player2["steals"] = data[key]["steals"];
-                player2["name"] = key;
-            }
-
+    let playerVal = {"steals": 0, "name": ""};   
+    for (let player in players()) {
+        if (playerVal["steals"] < players()[player]["steals"]) {
+            playerVal["steals"] = players()[player]["steals"];
+            playerVal["name"] = player;
         }
     }
-    return player1["name"] === player2["name"];
+    return playerVal["name"] === playerWithLongestName();
 }
-
-console.log(doesLongNameStealATon());
+console.log("Same player with longest name and more steals is", doesLongNameStealATon());
