@@ -229,12 +229,14 @@ console.log("Team names", teamNames());
 // }
 
 function playerNumbers(nameOfTeam) {
-    let jerseyNumbers = [];
+    // let jerseyNumbers = [];
+    // const dataPlayer = dataPlayers(nameOfTeam).players;
+    // for (let player in dataPlayer) {
+    //     jerseyNumbers.push(dataPlayer[player]["number"]);
+    // }
+    // return jerseyNumbers;
     const dataPlayer = dataPlayers(nameOfTeam).players;
-    for (let player in dataPlayer) {
-        jerseyNumbers.push(dataPlayer[player]["number"]);
-    }
-    return jerseyNumbers;
+    return Object.values(dataPlayer).map(({number}) => number);
 }
 console.log("Nets jersey numbers", playerNumbers("Brooklyn Nets"));
 
@@ -275,14 +277,16 @@ console.log("Statistics of Anderson", playerStats("Alan Anderson"));
 // }
 
 function bigShoeRebounds() {
-    let playerVal = {"shoe": 0, "rebounds": 0};
-    for (let player in players()) {
-        if (playerVal["shoe"] < players()[player]["shoe"]) {
-            playerVal["shoe"] = players()[player]["shoe"];
-            playerVal["rebounds"] = players()[player]["rebounds"];
-        }
-    return playerVal["rebounds"];
-    }
+    // let playerVal = {"shoe": 0, "rebounds": 0};
+    // for (let player in players()) {
+    //     if (playerVal["shoe"] < players()[player]["shoe"]) {
+    //         playerVal["shoe"] = players()[player]["shoe"];
+    //         playerVal["rebounds"] = players()[player]["rebounds"];
+    //     }
+    // return playerVal["rebounds"];
+    // }
+    let playerSort = Object.entries(players()).sort((a,b) => b[1].shoe - a[1].shoe);
+    return playerSort[0][1].rebounds;
 }
 console.log("Player with big shoe has rebounds", bigShoeRebounds());
 
@@ -303,14 +307,16 @@ console.log("Player with big shoe has rebounds", bigShoeRebounds());
 // }
 
 function mostPointsScored() {
-    let playerVal = {"points": 0, "name": ""};
-    for (let player in players()) {
-        if (playerVal["points"] < players()[player]["points"]) {
-            playerVal["points"] = players()[player]["points"];
-            playerVal["name"] = player;
-        }
-    }
-    return playerVal["name"];
+    // let playerVal = {"points": 0, "name": ""};
+    // for (let player in players()) {
+    //     if (playerVal["points"] < players()[player]["points"]) {
+    //         playerVal["points"] = players()[player]["points"];
+    //         playerVal["name"] = player;
+    //     }
+    // }
+    // return playerVal["name"];
+    let playerSort = Object.entries(players()).sort((a,b) => b[1].points - a[1].points);
+    return playerSort[0][0];
 }
 console.log("Player High Score", mostPointsScored());
 
@@ -333,15 +339,17 @@ console.log("Player High Score", mostPointsScored());
 // }
 
 function winningTeam() {
-    let accum1 = 0;
-    let accum2 = 0;
-    for (let player in players()) {
-        if (homeTeam().players[player]) {
-            accum1 += players()[player]["points"];
-        } else {
-            accum2 += players()[player]["points"];
-        }
-    }
+    // let accum1 = 0;
+    // let accum2 = 0;
+    // for (let player in players()) {
+    //     if (homeTeam().players[player]) {
+    //         accum1 += players()[player]["points"];
+    //     } else {
+    //         accum2 += players()[player]["points"];
+    //     }
+    // }
+    let accum1 = Object.values(homeTeam().players).reduce((t, {points}) => t + points, 0);
+    let accum2 = Object.values(awayTeam().players).reduce((t, {points}) => t + points, 0);
     return (accum1 > accum2) ? "Brooklyn Nets" : "Charlotte Hornets";
 }
 console.log("Winning team is", winningTeam());
@@ -362,14 +370,16 @@ console.log("Winning team is", winningTeam());
 //     return player["name"];
 // }
 function playerWithLongestName() {
-    let playerVal = {"length": 0, "name": ""};
-    for (let player in players()) {
-        if (playerVal["length"] < player.length) {
-            playerVal["length"] = player.length;
-            playerVal["name"] = player;
-        }
-    }
-    return playerVal["name"];
+    // let playerVal = {"length": 0, "name": ""};
+    // for (let player in players()) {
+    //     if (playerVal["length"] < player.length) {
+    //         playerVal["length"] = player.length;
+    //         playerVal["name"] = player;
+    //     }
+    // }
+    // return playerVal["name"];
+    let playerSort = Object.entries(players()).sort((a,b) => b[0].length - a[0].length);
+    return playerSort[0][0];
 }
 console.log("Player with longest name", playerWithLongestName());
 
@@ -389,19 +399,20 @@ console.log("Player with longest name", playerWithLongestName());
 //                 player2["steals"] = data[key]["steals"];
 //                 player2["name"] = key;
 //             }
-
 //         }
 //     }
 //     return player1["name"] === player2["name"];
 // }
 function doesLongNameStealATon() {
-    let playerVal = {"steals": 0, "name": ""};   
-    for (let player in players()) {
-        if (playerVal["steals"] < players()[player]["steals"]) {
-            playerVal["steals"] = players()[player]["steals"];
-            playerVal["name"] = player;
-        }
-    }
-    return playerVal["name"] === playerWithLongestName();
+    // let playerVal = {"steals": 0, "name": ""};   
+    // for (let player in players()) {
+    //     if (playerVal["steals"] < players()[player]["steals"]) {
+    //         playerVal["steals"] = players()[player]["steals"];
+    //         playerVal["name"] = player;
+    //     }
+    // }
+    // return playerVal["name"] === playerWithLongestName();
+    let playerSort = Object.entries(players()).sort((a,b) => b[1].steals - a[1].steals);
+    return playerSort[0][0] === playerWithLongestName();
 }
 console.log("Same player with longest name and more steals is", doesLongNameStealATon());
